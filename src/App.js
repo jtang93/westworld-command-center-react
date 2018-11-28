@@ -10,8 +10,49 @@ const areasURL = "http://localhost:4000/areas"
 class App extends Component {
 
   state = {
-    hostsData: null,
-    areasData: null
+    hostsData: [],
+    areasData: [],
+    selectedHost: null // Need to change
+  }
+
+  handleSelectedHostClick = (host) => {
+    this.setState({selectedHost: host})
+  }
+
+  updateHostStatus = (host) => {
+
+    host.active = !host.active
+      this.setState({
+        selectedHost: host,
+        hostsData: this.state.hostsData.map(oldHost=>{
+          if (oldHost.id === host.id){
+            return host
+          } else {
+            return oldHost
+          }
+        })
+      })
+  }
+
+  updateHostArea = ({value}) => {
+    // Need to change selectedHost
+
+    let newSelectedHost = {...this.state.selectedHost}
+    newSelectedHost.area = value
+    this.setState({selectedHost: newSelectedHost})
+
+    // Make a copy of hostsData
+    let oldHostsData = [...this.state.hostsData]
+
+    let newHostsData = oldHostsData.map((host,index) => {
+      if (host.id === this.state.selectedHost.id) {
+        return newSelectedHost
+      } else {
+        return host
+      }
+    })
+
+    this.setState({hostsData: newHostsData})
   }
 
   // As you go through the components given you'll see a lot of functional components.
@@ -38,8 +79,19 @@ class App extends Component {
     return (
       <Segment id='app'>
 
-        <WestworldMap areasData={this.state.areasData} hostsData={this.state.hostsData} />
-        <Headquarters hostsData={this.state.hostsData}/>
+        <WestworldMap
+          areasData={this.state.areasData} hostsData={this.state.hostsData}
+          handleSelectedHostClick={this.handleSelectedHostClick}
+           />
+
+        <Headquarters
+          hostsData={this.state.hostsData}
+          areasData={this.state.areasData}
+          selectedHost={this.state.selectedHost}
+          handleSelectedHostClick={this.handleSelectedHostClick}
+          updateHostArea={this.updateHostArea}
+          updateHostStatus={this.updateHostStatus}
+          />
 
       </Segment>
     )

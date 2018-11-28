@@ -4,22 +4,28 @@ import { Radio, Icon, Card, Grid, Image, Dropdown, Divider } from 'semantic-ui-r
 
 
 class HostInfo extends Component {
-  state = {
-    options: [
-      {key: "some_area", text: "Some Area", value: "some_area"},
-      {key: "another_area", text: "Another Area", value: "another_area"}
-    ],
-    value: "some_area",
-    // This state is just to show how the dropdown component works.
-    // Options have to be formatted in this way (array of objects with keys of: key, text, value)
-    // Value has to match the value in the object to render the right text.
 
-    // IMPORTANT: But whether it should be stateful or not is entirely up to you. Change this component however you like.
+  state = {
+    value: this.props.selectedHost.area
+  }
+
+  getArrayOfObjectAreas = (areas) => {
+    return areas.map(area => {
+        return {key: area.name, text: area.name, value: area.name}
+      })
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    return {value: props.selectedHost.area}
   }
 
 
 
+
+
   handleChange = (e, {value}) => {
+    // this.setState({value})
+    this.props.updateHostArea({value})
     // the 'value' attribute is given via Semantic's Dropdown component.
     // Put a debugger in here and see what the "value" variable is when you pass in different options.
     // See the Semantic docs for more info: https://react.semantic-ui.com/modules/dropdown/#usage-controlled
@@ -27,6 +33,7 @@ class HostInfo extends Component {
 
   toggle = () => {
     console.log("The radio button fired");
+    this.props.updateHostStatus(this.props.selectedHost)
   }
 
   render(){
@@ -52,7 +59,6 @@ class HostInfo extends Component {
                   onChange={this.toggle}
                   label={this.props.selectedHost.active ? "Active" : "Inactive"}
                   checked={this.props.selectedHost.active}
-                  className="radio"
                   slider
                 />
               </Card.Meta>
@@ -62,7 +68,7 @@ class HostInfo extends Component {
               <Dropdown
                 onChange={this.handleChange}
                 value={this.state.value}
-                options={this.state.options}
+                options={this.getArrayOfObjectAreas(this.props.areasData)}
                 selection
               />
             </Card.Content>

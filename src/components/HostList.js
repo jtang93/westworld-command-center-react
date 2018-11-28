@@ -5,10 +5,20 @@ import Host from './Host'
 const HostList = (props) => {
 
   const createHostCards = () => {
-    if (props.hostsData) {
-      return props.hostsData.map(host => {
+    if (props.hostsDataInactive) {
+      return props.hostsDataInactive.map(host => {
         if (!host.active) {
-          return <Host key={host.id} host={host} selectHost={props.selectHost} />
+          return <Host key={host.id} host={host} handleSelectedHostClick={props.handleSelectedHostClick} />
+        } else {
+          null
+        }
+      })
+    } else if (props.hostsDataActive) {
+      return props.hostsDataActive.map(host => {
+        if (host.active) {
+          return <Host key={host.id} host={host} handleSelectedHostClick={props.handleSelectedHostClick} />
+        } else {
+          null
         }
       })
     }

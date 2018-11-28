@@ -8,25 +8,22 @@ import ColdStorage from './ColdStorage'
 class Headquarters extends Component {
   // Remember, there's many ways to do this. This doesn't have to be a class component. It's up to you.
 
-  state = {
-    selectedHost: null
-  }
-
-  // Should this function and selectedHost be in state
-  selectHost = (props) => {
-    this.setState({selectedHost: props.host})
-  }
-
   render(){
     return(
       <Grid celled='internally'>
         <Grid.Column width={8}>
 
         {/* Something goes here.... */}
-          <ColdStorage hostsData={this.props.hostsData} selectHost={this.selectHost}/>
+          <ColdStorage
+            hostsData={this.props.hostsData} handleSelectedHostClick={this.props.handleSelectedHostClick}/>
         </Grid.Column>
         <Grid.Column width={5}>
-          <Details selectedHost={this.state.selectedHost} />
+          <Details
+            areasData={this.props.areasData}
+            selectedHost={this.props.selectedHost}
+            updateHostArea={this.props.updateHostArea}
+            updateHostStatus={this.props.updateHostStatus}
+             />
         </Grid.Column>
         <Grid.Column width={3}>
 

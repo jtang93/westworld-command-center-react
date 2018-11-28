@@ -6,7 +6,8 @@ const WestworldMap = (props) => {
 
   const createAreaCards = () => {
     if (props.areasData) {
-      return props.areasData.map(area=><Area key={area.id} area={area} hostsData={props.hostsData} />)
+      return props.areasData.map(area =>
+        <Area key={area.id} area={area} hostsData={props.hostsData} handleSelectedHostClick={props.handleSelectedHostClick}/>)
     }
   }
 
